@@ -11,19 +11,16 @@ import {
 import { cadastrar } from "../services/auth";
 
 export default function Cadastro({ navigation }) {
-  // Além dos dados da conta, guardamos uma repetição da senha para conferir
-  // se a pessoa digitou o que pretendia. Essa confirmação fica só nesta tela.
   const [erro, setErro] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [carregando, setCarregando] = useState(false);
 
-  // Antes de criar a conta, verificamos os campos obrigatórios, se as senhas
-  // são iguais e se têm pelo menos seis caracteres. Cada return interrompe
-  // a tentativa para a pessoa corrigir o problema indicado.
   async function handleCadastro() {
-    if (carregando) return;
+    if (carregando) {
+      return;
+    }
 
     setErro("");
 
@@ -45,18 +42,18 @@ export default function Cadastro({ navigation }) {
     try {
       setCarregando(true);
 
-      // Enviamos e-mail e senha ao serviço. Se o cadastro der certo,
-      // o Navigator percebe que o usuário foi conectado e abre a Home.
       await cadastrar(email.trim(), senha);
+
     } catch (error) {
-      // Escolhemos a mensagem de acordo com o problema informado pelo Firebase.
       if (error.code === "auth/email-already-in-use") {
         setErro("Este e-mail já está cadastrado.");
       } else if (error.code === "auth/invalid-email") {
         setErro("Digite um e-mail válido.");
       } else if (error.code === "auth/weak-password") {
         setErro("A senha é muito fraca.");
-      } else if (error.code === "auth/network-request-failed") {
+      } else if (
+        error.code === "auth/network-request-failed"
+      ) {
         setErro("Verifique sua conexão com a internet.");
       } else {
         setErro("Não foi possível criar a conta.");
@@ -68,10 +65,9 @@ export default function Cadastro({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Criar conta</Text>
-
-      {/* O formulário funciona como o Login, mas inclui a confirmação
-          da senha antes de permitir a criação da conta. */}
+      <Text style={styles.title}>
+        Criar conta
+      </Text>
 
       <TextInput
         style={styles.input}
@@ -100,7 +96,10 @@ export default function Cadastro({ navigation }) {
       />
 
       {erro ? (
-        <Text style={styles.error} accessibilityRole="alert">
+        <Text
+          style={styles.error}
+          accessibilityRole="alert"
+        >
           {erro}
         </Text>
       ) : null}
@@ -130,14 +129,7 @@ export default function Cadastro({ navigation }) {
   );
 }
 
-// Mantemos a aparência do cadastro no mesmo padrão da tela de Login.
 const styles = StyleSheet.create({
-  error: {
-    color: "#b00020",
-    marginBottom: 15,
-    textAlign: "center",
-  },
-
   container: {
     flex: 1,
     justifyContent: "center",
@@ -158,6 +150,12 @@ const styles = StyleSheet.create({
     padding: 15,
     marginBottom: 15,
     fontSize: 16,
+  },
+
+  error: {
+    color: "#b00020",
+    marginBottom: 15,
+    textAlign: "center",
   },
 
   button: {

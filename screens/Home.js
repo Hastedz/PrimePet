@@ -9,19 +9,14 @@ import {
 
 import { sair } from "../services/auth";
 
-// O Navigator entrega os dados da pessoa conectada em usuario.
-// Usamos o e-mail para mostrar qual conta está aberta.
-
 export default function Home({ usuario }) {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
 
-  // Ao tocar em Sair, pedimos ao Firebase para encerrar a sessão.
-  // O Navigator percebe a mudança e volta a mostrar o Login.
-  // Se a saída falhar, a pessoa continua nesta tela e recebe uma mensagem.
-
   async function handleSair() {
-    if (carregando) return;
+    if (carregando) {
+      return;
+    }
 
     setErro("");
 
@@ -29,8 +24,11 @@ export default function Home({ usuario }) {
       setCarregando(true);
 
       await sair();
-    } catch {
-      setErro("Não foi possível sair. Tente novamente.");
+
+    } catch (error) {
+      setErro(
+        "Não foi possível sair. Tente novamente."
+      );
     } finally {
       setCarregando(false);
     }
@@ -43,7 +41,7 @@ export default function Home({ usuario }) {
       </Text>
 
       <Text style={styles.email}>
-        {usuario.email}
+        {usuario?.email || "Usuário"}
       </Text>
 
       {erro ? (
@@ -54,19 +52,7 @@ export default function Home({ usuario }) {
           {erro}
         </Text>
       ) : null}
-
-      <TouchableOpacity
-        style={[
-          styles.button,
-          carregando && styles.buttonDisabled,
-        ]}
-        onPress={handleSair}
-        disabled={carregando}
-      >
-        <Text style={styles.buttonText}>
-          {carregando ? "Saindo..." : "Sair"}
-        </Text>
-      </TouchableOpacity>
+   
     </View>
   );
 }
