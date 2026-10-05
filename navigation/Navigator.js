@@ -1,3 +1,5 @@
+import { configurarNotificacoes } from "../services/notifications";
+
 import { useEffect, useState } from "react";
 
 import {
@@ -41,6 +43,11 @@ export default function Navigator() {
 
     return cancelarObservacao;
   }, []);
+
+useEffect(() => {
+  configurarNotificacoes();
+}, []);
+
 
   if (carregando) {
     return (

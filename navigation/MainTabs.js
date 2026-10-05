@@ -46,12 +46,14 @@ export default function MainTabs({ usuario }) {
       />
 
       <Tab.Screen
-        name="Perfil"
-        component={Perfil}
-        options={{
-          title: "Perfil",
-        }}
-      />
+  name="Perfil"
+  options={{
+    title: "Perfil",
+  }}
+>
+  {() => <Perfil usuario={usuario} />}
+</Tab.Screen>
+      
     </Tab.Navigator>
   );
 }
