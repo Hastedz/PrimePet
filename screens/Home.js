@@ -11,6 +11,7 @@ import {
 import { enviarNotificacao } from "../services/notifications";
 import { adicionarNotificacao } from "../services/notificationStore";
 
+
 export default function Home({ usuario }) {
   const [erro, setErro] = useState("");
 
@@ -74,9 +75,18 @@ export default function Home({ usuario }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
-      <Text style={styles.title}>
-        🐶 PrimePet
+<View style={styles.linha}>
+      
+      
+      <Text style={styles.texto1}>
+      🐾 Pet
       </Text>
+
+      <Text style={styles.texto2}>
+         Care
+      </Text>
+
+      </View>
 
       <Text style={styles.welcome}>
         Bem-vindo!
@@ -90,28 +100,30 @@ export default function Home({ usuario }) {
         O que você deseja fazer?
       </Text>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.botoes}>
+
+      <View style={styles.banho}>
         <Button
           title="🛁 Agende seu banho"
           onPress={agendarBanho}
         />
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.tosa}>
         <Button
           title="✂️ Agende sua tosa"
           onPress={agendarTosa}
         />
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.consulta}>
         <Button
           title="🩺 Agende sua consulta"
           onPress={agendarConsulta}
         />
       </View>
 
-      <View style={styles.buttonContainer}>
+      <View style={styles.compras}>
         <Button
           title="🛍️ Compre nossos produtos"
           onPress={comprarProdutos}
@@ -124,6 +136,7 @@ export default function Home({ usuario }) {
         </Text>
       ) : null}
 
+</View>
     </ScrollView>
   );
 }
@@ -133,14 +146,25 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 20,
+    alignItems:"center",
   },
 
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 10,
+  linha: {
+    flexDirection: "row",
+    alignItems: "center",
   },
+  
+  texto1: {
+    fontSize: 20,
+    color:"blue"
+  },
+  
+  texto2: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color:"green",
+  },
+
 
   welcome: {
     fontSize: 24,
@@ -162,9 +186,39 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  buttonContainer: {
+  botoes: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 10,
+  },
+
+  banho:{
     marginTop: 8,
     marginBottom: 8,
+    height:50,
+    width:150,
+  },
+
+  tosa: {
+    marginTop: 8,
+    marginBottom: 8,
+    height:50,
+    width:150,
+  },
+
+  consulta: {
+    marginTop: 8,
+    marginBottom: 8,
+    height:50,
+    width:150,
+  },
+
+  compras: {
+    marginTop: 8,
+    marginBottom: 8,
+    height:50,
+    width:150,
   },
 
   error: {
