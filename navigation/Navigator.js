@@ -2,6 +2,8 @@ import { configurarNotificacoes } from "../services/notifications";
 
 import { useEffect, useState } from "react";
 
+import {image} from "react-native";
+
 import {
   ActivityIndicator,
   StyleSheet,

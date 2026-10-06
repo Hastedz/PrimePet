@@ -54,3 +54,33 @@ export function observarNotificacoes(listener) {
     );
   };
 }
+
+export function enviarNotificacao(titulo, mensagem) {
+  const sucesso = adicionarNotificacao(titulo, mensagem);
+
+  // Notificação do navegador somente no Web
+  if (
+    typeof window !== "undefined" &&
+    "Notification" in window
+  ) {
+    if (Notification.permission === "granted") {
+      new Notification(titulo, {
+        body: mensagem,
+      });
+    } else if (Notification.permission === "default") {
+      Notification.requestPermission().then((permissao) => {
+        if (permissao === "granted") {
+          new Notification(titulo, {
+            body: mensagem,
+          });
+        }
+      });
+    }
+  }
+
+  return sucesso;
+}
+
+export function configurarNotificacoes() {
+  console.log("Notificações configuradas.");
+}

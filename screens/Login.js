@@ -6,14 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 
-import { entrar } from "../services/auth";
+import { login } from "../services/auth";
 
 export default function Login({ navigation }) {
+  const [erro, setErro] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
 
   async function handleLogin() {
@@ -31,23 +32,23 @@ export default function Login({ navigation }) {
     try {
       setCarregando(true);
 
-      await entrar(email.trim(), senha);
+      await login(email.trim(), senha);
 
     } catch (error) {
-      if (
+      if (error.code === "auth/invalid-email") {
+        setErro("Digite um e-mail válido.");
+      } else if (
         error.code === "auth/invalid-credential" ||
         error.code === "auth/wrong-password" ||
         error.code === "auth/user-not-found"
       ) {
         setErro("E-mail ou senha incorretos.");
-      } else if (error.code === "auth/invalid-email") {
-        setErro("Digite um e-mail válido.");
       } else if (
         error.code === "auth/network-request-failed"
       ) {
         setErro("Verifique sua conexão com a internet.");
       } else {
-        setErro("Não foi possível entrar.");
+        setErro("Não foi possível fazer login.");
       }
     } finally {
       setCarregando(false);
@@ -56,9 +57,12 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Login
-      </Text>
+
+      {/* LOGO */}
+      <Image
+        source={require("../assets/primepet-logo.png")}
+        style={styles.logo}
+      />
 
       <TextInput
         style={styles.input}
@@ -105,9 +109,10 @@ export default function Login({ navigation }) {
         onPress={() => navigation.navigate("Cadastro")}
       >
         <Text style={styles.link}>
-          Não possui uma conta? Cadastre-se
+          Ainda não possui uma conta? Cadastre-se
         </Text>
       </TouchableOpacity>
+
     </View>
   );
 }
@@ -116,37 +121,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
 
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    textAlign: "center",
+  logo: {
+    width: 250,
+    height: 250,
+    resizeMode: "contain",
     marginBottom: 30,
   },
 
   input: {
+    width: "85%",
+    maxWidth: 380,
+    height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    padding: 15,
+    paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
+    alignSelf: "center",
   },
 
   error: {
     color: "#b00020",
     marginBottom: 15,
     textAlign: "center",
+    width: "85%",
+    maxWidth: 380,
+    alignSelf: "center",
   },
 
   button: {
+    width: "85%",
+    maxWidth: 380,
     backgroundColor: "#007AFF",
-    padding: 15,
+    height: 50,
     borderRadius: 8,
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
+    alignSelf: "center",
   },
 
   buttonDisabled: {
@@ -163,5 +180,8 @@ const styles = StyleSheet.create({
     color: "#007AFF",
     textAlign: "center",
     fontSize: 15,
+    width: "85%",
+    maxWidth: 380,
+    alignSelf: "center",
   },
 });

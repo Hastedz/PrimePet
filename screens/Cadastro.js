@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import {
@@ -6,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 
 import { cadastrar } from "../services/auth";
@@ -65,35 +67,39 @@ export default function Cadastro({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Criar conta
-      </Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="E-mail"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
+  <Image
+    source={require("../assets/primepet-logo.png")}
+    style={styles.logo}
+  />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Senha"
-        value={senha}
-        onChangeText={setSenha}
-        secureTextEntry
-      />
+  <TextInput
+    style={styles.input}
+    placeholder="E-mail"
+    value={email}
+    onChangeText={setEmail}
+    keyboardType="email-address"
+    autoCapitalize="none"
+    autoCorrect={false}
+  />
 
-      <TextInput
-        style={styles.input}
-        placeholder="Confirmar senha"
-        value={confirmarSenha}
-        onChangeText={setConfirmarSenha}
-        secureTextEntry
-      />
+  <TextInput
+    style={styles.input}
+    placeholder="Senha"
+    value={senha}
+    onChangeText={setSenha}
+    secureTextEntry
+  />
+
+  <TextInput
+    style={styles.input}
+    placeholder="Confirmar senha"
+    value={confirmarSenha}
+    onChangeText={setConfirmarSenha}
+    secureTextEntry
+  />
+
+  
 
       {erro ? (
         <Text
@@ -125,6 +131,7 @@ export default function Cadastro({ navigation }) {
           Já possui uma conta? Faça login
         </Text>
       </TouchableOpacity>
+
     </View>
   );
 }
@@ -133,37 +140,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
 
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    textAlign: "center",
+  logo: {
+    width: 250,
+    height: 250,
+    resizeMode: "contain",
     marginBottom: 30,
   },
 
   input: {
+    width: "85%",
+    maxWidth: 380,
+    height: 50,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    padding: 15,
+    paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
+    alignSelf: "center",
   },
 
   error: {
     color: "#b00020",
     marginBottom: 15,
     textAlign: "center",
+    width: "85%",
+    maxWidth: 380,
+    alignSelf: "center",
   },
 
   button: {
+    width: "85%",
+    maxWidth: 380,
     backgroundColor: "#007AFF",
-    padding: 15,
+    height: 50,
     borderRadius: 8,
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
+    alignSelf: "center",
   },
 
   buttonDisabled: {
@@ -180,5 +199,8 @@ const styles = StyleSheet.create({
     color: "#007AFF",
     textAlign: "center",
     fontSize: 15,
+    width: "85%",
+    maxWidth: 380,
+    alignSelf: "center",
   },
 });
