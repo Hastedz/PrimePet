@@ -14,7 +14,7 @@ export function cadastrar(email, senha) {
   );
 }
 
-export function entrar(email, senha) {
+export function login(email, senha) {
   return signInWithEmailAndPassword(
     auth,
     email.trim(),

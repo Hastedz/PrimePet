@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import {
@@ -11,21 +12,22 @@ import {
 import { enviarNotificacao } from "../services/notifications";
 import { adicionarNotificacao } from "../services/notificationStore";
 
-
 export default function Home({ usuario }) {
   const [erro, setErro] = useState("");
+  const [mensagem, setMensagem] = useState("");
 
   async function agendarBanho() {
     try {
       setErro("");
+      setMensagem("");
 
       const titulo = "🛁 Banho agendado";
-      const mensagem =
-        "Seu pet tem um banho agendado para amanhã!";
+      const texto = "Seu pet tem um banho agendado para amanhã!";
 
-      await enviarNotificacao(titulo, mensagem);
+      await enviarNotificacao(titulo, texto);
+      adicionarNotificacao(titulo, texto);
 
-      adicionarNotificacao(titulo, mensagem);
+      setMensagem(texto);
     } catch (error) {
       console.log(error);
       setErro("Não foi possível enviar a notificação.");
@@ -35,14 +37,15 @@ export default function Home({ usuario }) {
   async function agendarTosa() {
     try {
       setErro("");
+      setMensagem("");
 
       const titulo = "✂️ Tosa agendada";
-      const mensagem =
-        "A tosa do seu pet foi agendada com sucesso!";
+      const texto = "A tosa do seu pet foi agendada com sucesso!";
 
-      await enviarNotificacao(titulo, mensagem);
+      await enviarNotificacao(titulo, texto);
+      adicionarNotificacao(titulo, texto);
 
-      adicionarNotificacao(titulo, mensagem);
+      setMensagem(texto);
     } catch (error) {
       console.log(error);
       setErro("Não foi possível enviar a notificação.");
@@ -52,14 +55,16 @@ export default function Home({ usuario }) {
   async function agendarConsulta() {
     try {
       setErro("");
+      setMensagem("");
 
       const titulo = "🩺 Consulta agendada";
-      const mensagem =
+      const texto =
         "Sua consulta veterinária foi agendada com sucesso!";
 
-      await enviarNotificacao(titulo, mensagem);
+      await enviarNotificacao(titulo, texto);
+      adicionarNotificacao(titulo, texto);
 
-      adicionarNotificacao(titulo, mensagem);
+      setMensagem(texto);
     } catch (error) {
       console.log(error);
       setErro("Não foi possível enviar a notificação.");
@@ -67,25 +72,24 @@ export default function Home({ usuario }) {
   }
 
   function comprarProdutos() {
-    setErro(
-      "🛍️ Produtos: em breve você poderá conferir nossos produtos para seu pet!"
+    setErro("");
+    setMensagem(
+      "🛍️ Em breve você poderá conferir nossos produtos para seu pet!"
     );
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
 
-<View style={styles.linha}>
-      
-      
-      <Text style={styles.texto1}>
-      🐾 Pet
-      </Text>
+      {/* LOGO / NOME */}
+      <View style={styles.linha}>
+        <Text style={styles.texto1}>
+          🐾 Pet
+        </Text>
 
-      <Text style={styles.texto2}>
-         Care
-      </Text>
-
+        <Text style={styles.texto2}>
+          Care
+        </Text>
       </View>
 
       <Text style={styles.welcome}>
@@ -100,71 +104,82 @@ export default function Home({ usuario }) {
         O que você deseja fazer?
       </Text>
 
+      {/* BOTÕES */}
       <View style={styles.botoes}>
 
-      <View style={styles.banho}>
-        <Button
-          title="🛁 Agende seu banho"
-          onPress={agendarBanho}
-        />
+        <View style={styles.botao}>
+          <Button
+            title="🛁 Agende seu banho"
+            onPress={agendarBanho}
+          />
+        </View>
+
+        <View style={styles.botao}>
+          <Button
+            title="✂️ Agende sua tosa"
+            onPress={agendarTosa}
+          />
+        </View>
+
+        <View style={styles.botao}>
+          <Button
+            title="🩺 Agende sua consulta"
+            onPress={agendarConsulta}
+          />
+        </View>
+
+        <View style={styles.botao}>
+          <Button
+            title="🛍️ Compre nossos produtos"
+            onPress={comprarProdutos}
+          />
+        </View>
+
       </View>
 
-      <View style={styles.tosa}>
-        <Button
-          title="✂️ Agende sua tosa"
-          onPress={agendarTosa}
-        />
-      </View>
+      {/* MENSAGEM DE SUCESSO */}
+      {mensagem ? (
+        <Text style={styles.mensagem}>
+          {mensagem}
+        </Text>
+      ) : null}
 
-      <View style={styles.consulta}>
-        <Button
-          title="🩺 Agende sua consulta"
-          onPress={agendarConsulta}
-        />
-      </View>
-
-      <View style={styles.compras}>
-        <Button
-          title="🛍️ Compre nossos produtos"
-          onPress={comprarProdutos}
-        />
-      </View>
-
+      {/* MENSAGEM DE ERRO */}
       {erro ? (
         <Text style={styles.error}>
           {erro}
         </Text>
       ) : null}
 
-</View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    padding: 20,
-    alignItems:"center",
-  },
+  flexGrow: 1,
+  padding: 20,
+  alignItems: "center",
+},
 
-  linha: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  
+ linha: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: 80,
+},
+
   texto1: {
-    fontSize: 20,
-    color:"blue"
-  },
-  
-  texto2: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color:"green",
+    fontSize: 25,
+      fontWeight: "bold",
+    color: "blue",
   },
 
+  texto2: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "green",
+  },
 
   welcome: {
     fontSize: 24,
@@ -187,43 +202,32 @@ const styles = StyleSheet.create({
   },
 
   botoes: {
+    width: 320,
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "center",
-    alignItems: "center",
     gap: 10,
   },
 
-  banho:{
-    marginTop: 8,
-    marginBottom: 8,
-    height:50,
-    width:150,
+  botao: {
+    width: 150,
+    height: 50,
+    marginVertical: 5,
   },
 
-  tosa: {
-    marginTop: 8,
-    marginBottom: 8,
-    height:50,
-    width:150,
-  },
-
-  consulta: {
-    marginTop: 8,
-    marginBottom: 8,
-    height:50,
-    width:150,
-  },
-
-  compras: {
-    marginTop: 8,
-    marginBottom: 8,
-    height:50,
-    width:150,
+  mensagem: {
+    marginTop: 20,
+    color: "green",
+    fontSize: 16,
+    textAlign: "center",
+    maxWidth: 320,
   },
 
   error: {
-    color: "#b00020",
     marginTop: 20,
+    color: "#b00020",
+    fontSize: 16,
     textAlign: "center",
+    maxWidth: 320,
   },
 });

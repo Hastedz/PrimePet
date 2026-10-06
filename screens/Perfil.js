@@ -33,7 +33,7 @@ export default function Perfil({ usuario }) {
 
       <View style={styles.button}>
         <Button
-          title="🚪 Sair da conta"
+          title=" Sair da conta"
           onPress={fazerLogout}
         />
       </View>
